@@ -2,10 +2,18 @@
 
 Send notification messages to HipChat using a string message or templated message.
 
+## Building
+RUN:
+```
+$ ./src/ci/build.sh
+$ docker build -t dockerhub-username/dockerhub-repository .
+$ docker push dockerhub-username/dockerhub-repository
+```
+
 ## Installing
 
 ```
-resource-types:
+resource_types:
 - name: hipchat-notification-resource
   type: docker-image
   source:
