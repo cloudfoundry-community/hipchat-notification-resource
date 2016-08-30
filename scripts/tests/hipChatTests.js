@@ -78,6 +78,47 @@ describe('hipchat notifier', function (done) {
   });
 
 
+  it("Should exit(0) if room_id is in url", function () {
+    var mockConsole = {
+        error: sinon.stub().throws('Should not be called.'),
+        log: sinon.stub()
+      },
+      mockProcess = {
+        'exit': sinon.stub()
+      },
+      mockRequest = sinon.stub().callsArgWith(1, null, {
+        statusCode: 200
+      });
+
+    HipChatNotifier.__set__({
+      console: mockConsole,
+      process: mockProcess,
+      request: mockRequest
+    });
+
+    new HipChatNotifier().run({
+      'hipchat_server_url': 'https://api.hipchat.com/v2/room/12456',
+      'token': 'token',
+    }, {
+      'message': 'Building',
+      'from': 'Concourse CI',
+      'color': 'Yellow'
+    });
+
+    mockRequest.calledWith({
+      url: 'https://api.hipchat.com/v2/room/12456/notification?auth_token=token',
+      method: 'POST',
+      json: {
+        room_id: 12456,
+        from: 'Concourse CI',
+        message: 'Building',
+        color: 'Yellow'
+      }
+    }).should.equal(true);
+
+    mockProcess.exit.calledWith(0).should.equal(true);
+  });
+
   it("Should exit(0) if all environment variables are provided", function () {
     var mockConsole = {
         error: sinon.stub().throws('Should not be called.'),
@@ -117,6 +158,36 @@ describe('hipchat notifier', function (done) {
     }).should.equal(true);
 
     mockProcess.exit.calledWith(0).should.equal(true);
+  });
+
+  it("Should exit(1) if room id is missing", function () {
+    var mockConsole = {
+        error: sinon.stub(),
+        log: sinon.stub()
+      },
+      mockProcess = {
+        'exit': sinon.stub()
+      },
+      mockRequest = sinon.stub().callsArgWith(1, null, {
+        statusCode: 200
+      });
+
+    HipChatNotifier.__set__({
+      console: mockConsole,
+      process: mockProcess,
+      request: mockRequest
+    });
+
+    new HipChatNotifier().run({
+      'hipchat_server_url': 'https://api.hipchat.com',
+      'token': 'token'
+    }, {
+      'message': 'Building',
+      'from': 'Concourse CI',
+      'color': 'Yellow'
+    });
+
+    mockProcess.exit.calledWith(1).should.equal(true);
   });
 
   it("Should exit(1) if response code is not 200", function () {
