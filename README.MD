@@ -22,9 +22,9 @@ resource_types:
 
 ## Source Configuration
 
-* `hipchat_server_url`: *Required.* https://api.hipchat.com
+* `hipchat_server_url`: *Required.* https://api.hipchat.com OR https://api.hipchat.com/v2/room/12456 (see room_id below)
 * `token`: *Required.* token to authenticate with HipChat server
-* `room_id`: *Required.* The room to send notifications to
+* `room_id`: The room to send notifications to (Required when not specified in the hipchat_server_url)
 
 #### `out`: Sends message to HipChat room
 
