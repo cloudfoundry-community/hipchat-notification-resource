@@ -26,7 +26,7 @@ function HipChatClient() {
     },
     {
       name: "room_id",
-      optional: false
+      optional: true
     }
   ];
   this.paramProperties = [
@@ -115,6 +115,18 @@ HipChatClient.prototype.run = function (source, params) {
 
   self.checkProperties(source, this.sourceProperties);
   self.checkProperties(params, this.paramProperties);
+
+  if (!source.room_id) {
+    var re = /((?:http|https):\/\/.*)\/v2\/room\/(\d+)/;
+    if (re.test(source.hipchat_server_url)) {
+      var matches = source.hipchat_server_url.match(re);
+      source.hipchat_server_url = matches[1];
+      source.room_id = parseInt(matches[2], 10);
+    } else {
+      self.validInput = false;
+      console.error("Room id must be included in hipchat_server_url when not specified in the source (https://api.hipchat.com/v2/room/12456)");
+    }
+  }
 
   if (!self.validInput) {
     console.error("Please provide valid input and try again");
