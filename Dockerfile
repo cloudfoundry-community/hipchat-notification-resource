@@ -21,3 +21,4 @@ ADD scripts/ /scripts/
 ADD assets/ /opt/resource/
 RUN chmod +x /opt/resource/* && \
   chmod +x /scripts/*
+ADD LICENSE.txt /usr/share/doc/stackato/LICENSE.txt
