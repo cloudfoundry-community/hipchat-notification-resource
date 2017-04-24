@@ -1,0 +1,31 @@
+---
+meta:
+  name: hipchat-notification-resource
+  target: sw
+  url: https://ci.starkandwayne.com
+
+  aws:
+    bucket:     hipchat-notification-resource-pipeline
+    access_key: (( vault "secret/aws/cfcommunity:access" ))
+    secret_key: (( vault "secret/aws/cfcommunity:secret" ))
+
+  dockerhub:
+    email:    (( vault "secret/dockerhub:email" ))
+    username: (( vault "secret/dockerhub:username" ))
+    password: (( vault "secret/dockerhub:password" ))
+    repository: starkandwayne/hipchat-notification-resource
+
+  slack:
+    webhook: (( vault "secret/pipelines/hipchat-notification-resource/slack:webhook" ))
+    channel: '#botspam'
+
+  source:
+    github:
+      owner: starkandwayne
+      repo:  hipchat-notification-resource
+      private_key:  (( vault "secret/pipelines/hipchat-notification-resource/github:private" ))
+      access_token: (( vault "secret/pipelines/hipchat-notification-resource/github:token" ))
+
+  tests:
+    cmd: tests/src/ci/test.sh
+    args: []
