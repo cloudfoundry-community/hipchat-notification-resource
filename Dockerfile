@@ -17,8 +17,6 @@
 
 FROM mhart/alpine-node:base-5.9
 
-RUN apk add --no-cache bash
-
 ADD scripts/ /scripts/
 ADD assets/ /opt/resource/
 RUN chmod +x /opt/resource/* && \

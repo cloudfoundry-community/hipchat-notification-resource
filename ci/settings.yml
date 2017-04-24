@@ -19,13 +19,8 @@ meta:
     webhook: (( vault "secret/pipelines/hipchat-notification-resource/slack:webhook" ))
     channel: '#botspam'
 
-  source:
-    github:
-      owner: starkandwayne
-      repo:  hipchat-notification-resource
-      private_key:  (( vault "secret/pipelines/hipchat-notification-resource/github:private" ))
-      access_token: (( vault "secret/pipelines/hipchat-notification-resource/github:token" ))
-
-  tests:
-    cmd: tests/src/ci/test.sh
-    args: []
+  github:
+    owner: starkandwayne
+    repo:  hipchat-notification-resource
+    private_key:  (( vault "secret/pipelines/hipchat-notification-resource/github:private" ))
+    access_token: (( vault "secret/pipelines/hipchat-notification-resource/github:token" ))
